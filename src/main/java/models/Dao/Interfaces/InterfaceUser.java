@@ -15,7 +15,7 @@ public interface InterfaceUser {
     List<User> getAll();
 
     //Update
-    void update (int id, String name, String position, String role, String departmentId);
+    void update (int id, String name, String position, String role, int departmentId);
 
     //Delete
     void deleteById(int id);

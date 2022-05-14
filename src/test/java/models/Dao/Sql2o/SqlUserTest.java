@@ -11,7 +11,7 @@ import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SqlUserTest {
+public class SqlUserTest {
     static Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/news_portal_test", null, null);
     private static Connection conn;
     private static  SqlUser user = new SqlUser(sql2o);
@@ -58,15 +58,15 @@ class SqlUserTest {
     }
 
     @Test
-    public void existingUserCanBeFoundById() throws Exception {//failed
+    public void existingUserCanBeFoundById() throws Exception {
         user.add(testUser);
-        assertEquals(1, user.findById(testUser.getId()).getId());
+        assertEquals(testUser.getId(), user.findById(testUser.getId()).getId());
     }
 
     @Test
-    public void updateChangesUserName() throws Exception{//failed
+    public void updateChangesUserName() throws Exception{
         user.add(testUser);
-        user.update(testUser.getId(), "Jack", "intern", "IT specialist", "1");
+        user.update(testUser.getId(), "Jack", "intern", "IT specialist", 1);
         assertNotEquals(testUser.getName(), user.findById(testUser.getId()).getName());
     }
 

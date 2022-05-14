@@ -38,14 +38,14 @@ public class SqlUser implements InterfaceUser {
     }
 
     @Override
-    public void update(int id, String name, String position, String role, String departmentId) {
-        String sql = "Update users SET (name, position, role, departmentid) = (:name, :position, :role, :departmentId) WHERE id = :id";
+    public void update(int id, String name, String position, String role, int departmentId) {
+        String sql = "UPDATE users SET (name, position, role, departmentid) = (SELECT :name, :position, :role, :departmentId FROM users) WHERE id = :id";
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
                     .addParameter("name", name)
                     .addParameter("position", position)
                     .addParameter("role", role)
-                    .addParameter("departmentid", departmentId)
+                    .addParameter("departmentId", departmentId)
                     .addParameter("id", id)
                     .executeUpdate();
         } catch (Sql2oException ex) {
@@ -56,7 +56,6 @@ public class SqlUser implements InterfaceUser {
     @Override
     public void deleteById(int id) {
         String sql = "DELETE FROM users WHERE id=:id";
-        String deleteJoin = "DELETE FROM users WHERE id = :id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("id", id)
