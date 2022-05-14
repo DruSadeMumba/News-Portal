@@ -17,6 +17,7 @@ name VARCHAR
 CREATE TABLE posts (
 id SERIAL PRIMARY KEY,
 userid INT,
-content INT,
+createdby VARCHAR,
+content VARCHAR,
 createdat BIGINT
 );
