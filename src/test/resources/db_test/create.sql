@@ -1,5 +1,5 @@
 CREATE DATABASE news_portal_test;
-\c news_portal;
+\c news_portal_test;
 
 CREATE TABLE users (
 id SERIAL PRIMARY KEY,
