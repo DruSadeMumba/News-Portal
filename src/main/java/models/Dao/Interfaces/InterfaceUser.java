@@ -19,4 +19,7 @@ public interface InterfaceUser {
 
     //Delete
     void deleteById(int id);
+    void clearAll();
+
+    User findById(int id);
 }
