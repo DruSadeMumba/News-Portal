@@ -19,5 +19,6 @@ id SERIAL PRIMARY KEY,
 userid INT,
 createdby VARCHAR,
 content VARCHAR,
-createdat BIGINT
+createdat BIGINT,
+type VARCHAR
 );
