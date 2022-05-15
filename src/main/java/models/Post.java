@@ -11,7 +11,6 @@ public class Post implements Comparable <Post>{
     private long createdat;
     public String type;
 
-
     //getters
     public int getId() {return id;}
     public int getUserId() {return userId;}
@@ -52,7 +51,8 @@ public class Post implements Comparable <Post>{
                 userId == post.userId &&
                 createdat == post.createdat &&
                 Objects.equals(createdBy, post.createdBy) &&
-                Objects.equals(content, post.content);
+                Objects.equals(content, post.content) &&
+                Objects.equals(type, post.type);
     }
 
     @Override

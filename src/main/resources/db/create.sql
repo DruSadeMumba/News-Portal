@@ -20,5 +20,6 @@ userid INT,
 createdby VARCHAR,
 content VARCHAR,
 createdat BIGINT,
-type VARCHAR
+type VARCHAR,
+departmentid INT
 );
