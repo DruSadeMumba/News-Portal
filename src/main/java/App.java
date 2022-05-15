@@ -30,8 +30,10 @@ public class App {
         });
 
                 //create new user
-        post("/users/new", "application/json", (req, res)->{
+        post("/departments/:departmentId/users/new", "application/json", (req, res)->{
+            int departmentId = Integer.parseInt(req.params("departmentId"));
             User newUser = gson.fromJson(req.body(), User.class);
+            newUser.setDepartmentId(departmentId);
             user.add(newUser);
             res.status(201);
             return gson.toJson(newUser);
@@ -47,12 +49,15 @@ public class App {
             }
         });
 
+                //create new department
         post("/departments/new", "application/json", (req, res)->{
             Department newDepartment = gson.fromJson(req.body(), Department.class);
             department.add(newDepartment);
             res.status(201);
             return gson.toJson(newDepartment);
         });
+
+
 
     }
 }
