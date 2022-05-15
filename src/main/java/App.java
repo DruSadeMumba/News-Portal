@@ -36,7 +36,7 @@ public class App {
             newUser.setDepartmentId(departmentId);
             user.add(newUser);
             res.status(201);
-            return gson.toJson(newUser);
+            return gson.toJson(newUser.getName());
         });
 
                 //get all departments
@@ -57,7 +57,10 @@ public class App {
             return gson.toJson(newDepartment);
         });
 
-
+            //view users in departments
+        get("/departments/:departmentId/users", "application/json", (req, res)->{
+            return null;
+        });
 
     }
 }
