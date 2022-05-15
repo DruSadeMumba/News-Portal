@@ -1,8 +1,10 @@
 package models.Dao.Interfaces;
 
 import models.Department;
+import models.User;
 
 
+import java.net.UnknownServiceException;
 import java.util.List;
 
 public interface InterfaceDepartment {
@@ -14,6 +16,7 @@ public interface InterfaceDepartment {
 
     //Read
     List<Department> getAll();
+    List<User> getUsersInDept(int departmentId);
 
     //Update
     void update (int id, String name);
