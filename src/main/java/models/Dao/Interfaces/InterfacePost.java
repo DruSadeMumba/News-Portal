@@ -1,5 +1,6 @@
 package models.Dao.Interfaces;
 
+import models.DepartmentPost;
 import models.Post;
 
 import java.util.List;

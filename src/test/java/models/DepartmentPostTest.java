@@ -1,5 +1,6 @@
-package models.Dao;
+package models;
 
+import models.DepartmentPost;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,5 +28,4 @@ public class DepartmentPostTest {
     public DepartmentPost setUpDepartmentPost(){
         return new DepartmentPost(1, "Jane", "Wonderful news", "departmentnews" , 1);
     }
-
 }

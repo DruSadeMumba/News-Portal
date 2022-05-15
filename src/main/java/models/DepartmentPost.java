@@ -1,4 +1,4 @@
-package models.Dao;
+package models;
 
 import models.Post;
 

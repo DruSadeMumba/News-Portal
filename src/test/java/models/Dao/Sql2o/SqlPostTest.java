@@ -11,7 +11,7 @@ import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SqlPostTest {
+public class SqlPostTest {
     static Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/news_portal_test", null, null);
     private static Connection conn;
     private static  SqlPost post = new SqlPost(sql2o);
