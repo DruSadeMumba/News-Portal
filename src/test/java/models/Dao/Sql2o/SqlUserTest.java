@@ -114,7 +114,7 @@ public class SqlUserTest {
         return new User("John", "intern", "IT specialist", 1);
     }
     public Post setupNewPost(){
-        return new Post(userId, "Jane", "Wonderful news");
+        return new Post(userId, "Jane", "Wonderful news", "general");
     }
 
 }

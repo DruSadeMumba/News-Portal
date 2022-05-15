@@ -15,9 +15,10 @@ public class SqlPost implements InterfacePost {
 
     private final Sql2o sql2o;
     public SqlPost(Sql2o sql2o) { this.sql2o = sql2o; }
+
     @Override
     public void add(Post post) {
-        String sql = "INSERT INTO posts (userid, createdby, content, createdat) VALUES (:userId, :createdBy, :content, :createdat)";
+        String sql = "INSERT INTO posts (userid, createdby, content, createdat, type) VALUES (:userId, :createdBy, :content, :createdat, :type)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql, true)
                     .bind(post)
@@ -32,7 +33,7 @@ public class SqlPost implements InterfacePost {
     @Override
     public List<Post> getAll() {
         try(Connection con = sql2o.open()){
-            return con.createQuery("SELECT * FROM posts")
+            return con.createQuery("SELECT * FROM posts WHERE type = 'general';")
                     .executeAndFetch(Post.class);
         }
     }

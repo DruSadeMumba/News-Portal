@@ -33,8 +33,13 @@ public class PostTest {
         assertEquals("Wonderful news", testPost.getContent());
     }
 
+    @Test
+    void getType(){
+        assertEquals("general", testPost.getType());
+    }
+
     public Post setUpPost(){
-        return new Post(1, "Jane", "Wonderful news");
+        return new Post(1, "Jane", "Wonderful news", "general");
     }
 
 }
