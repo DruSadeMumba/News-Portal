@@ -39,6 +39,7 @@ public class SqlPost implements InterfacePost {
         }
     }
 
+
     @Override
     public void deleteById(int id) {
         try (Connection con = sql2o.open()) {

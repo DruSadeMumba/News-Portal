@@ -87,8 +87,18 @@ public class App {
             return gson.toJson(newPost);
         });
 
+                //get post
+        get("/posts", "application/json", (req, res)->{
+            if (post.getAll().size() > 0) {
+                return gson.toJson(post.getAll());
+            }
+            else {
+                return "{\"message\":\"I'm sorry, but no posts are currently listed in the database.\"}";
+            }
+        });
+
                 //create new department post
-        post("/departments/:departmentId/posts/new", "application/json", (req, res)->{
+        post("/departments/:departmentId/posts/new", "application/json", (req, res)->{ //not working
             int departmentId = Integer.parseInt(req.params("departmentId"));
             DepartmentPost newDepartmentPost = gson.fromJson(req.body(), DepartmentPost.class);
             newDepartmentPost.setCreatedat();
@@ -97,6 +107,18 @@ public class App {
             departmentPost.add(newDepartmentPost);
             res.status(201);
             return gson.toJson(newDepartmentPost);
+        });
+
+                //get department posts
+        get("/departments/:id/posts", "application/json", (req, res)->{//not working
+            int departmentId = Integer.parseInt(req.params(":id"));
+            Department department2 = department.findById(departmentId);
+            List<DepartmentPost> allDepartmentPost;
+            if (department2 == null){
+                throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
+            }
+            allDepartmentPost = departmentPost.getAll();
+            return gson.toJson(allDepartmentPost);
         });
 
     }
