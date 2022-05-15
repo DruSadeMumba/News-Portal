@@ -2,9 +2,6 @@ package models.Dao.Interfaces;
 
 import models.Department;
 import models.User;
-
-
-import java.net.UnknownServiceException;
 import java.util.List;
 
 public interface InterfaceDepartment {

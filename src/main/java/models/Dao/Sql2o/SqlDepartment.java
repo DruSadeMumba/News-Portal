@@ -2,6 +2,7 @@ package models.Dao.Sql2o;
 
 import models.Dao.Interfaces.InterfaceDepartment;
 import models.Department;
+import models.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -34,6 +35,15 @@ public class SqlDepartment implements InterfaceDepartment {
         try(Connection con = sql2o.open()){
             return con.createQuery("SELECT * FROM departments")
                     .executeAndFetch(Department.class);
+        }
+    }
+
+    @Override
+    public List<User> getUsersInDept(int departmentId) {
+        try(Connection con = sql2o.open()){
+            return con.createQuery("SELECT * FROM users WHERE departmentid = :departmentId")
+                    .addParameter("departmentId", departmentId)
+                    .executeAndFetch(User.class);
         }
     }
 
