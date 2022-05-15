@@ -109,5 +109,9 @@ public class SqlDepartmentTest {
     public Department setupNewDepartment(){
         return new Department("Human Resources");
     }
+    public User setupNewUser(){
+        return new User("John", "intern", "IT specialist", 1);
+    }
+
 
 }

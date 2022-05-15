@@ -1,5 +1,6 @@
 package models.Dao.Interfaces;
 
+import models.Post;
 import models.User;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public interface InterfaceUser {
 
     //Read
     List<User> getAll();
+    List<Post> getUserPosts();
 
     //Update
     void update (int id, String name, String position, String role, int departmentId);

@@ -1,6 +1,7 @@
 package models.Dao.Sql2o;
 
 import models.Dao.Interfaces.InterfaceUser;
+import models.Post;
 import models.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -28,6 +29,7 @@ public class SqlUser implements InterfaceUser {
             System.out.println(ex);
         }
     }
+
 
     @Override
     public List<User> getAll() {
