@@ -14,7 +14,7 @@ public interface InterfaceUser {
 
     //Read
     List<User> getAll();
-    List<Post> getUserPosts();
+    List<Post> getUserPosts(int userId);
 
     //Update
     void update (int id, String name, String position, String role, int departmentId);

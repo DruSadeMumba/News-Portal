@@ -1,5 +1,6 @@
 package models.Dao.Sql2o;
 
+import models.Post;
 import models.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,10 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SqlUserTest {
     static Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/news_portal_test", null, null);
     private static Connection conn;
+
     private static  SqlUser user = new SqlUser(sql2o);
     User testUser = setupNewUser();
     User testUser1 = setupNewUser();
     User testUser2 = setupNewUser();
+
+    private static  SqlPost post = new SqlPost(sql2o);
+    int userId = testUser.getId();
+    Post testPost = setupNewPost();
+    Post testPost1 = setupNewPost();
+    Post testPost2 = setupNewPost();
 
 
     @BeforeClass
@@ -50,6 +58,17 @@ public class SqlUserTest {
     public void addedUsersAreReturnedFromGetAll() throws Exception{
         user.add(testUser);
         assertEquals(1, user.getAll().size());
+    }
+
+    @Test
+    public void getUserPostsReturnsCorrectly() throws Exception {
+        user.add(testUser);
+        post.add(testPost);
+        post.add(testPost1);
+        post.add(testPost2);
+        assertTrue(user.getUserPosts(userId).contains(testPost));
+        assertTrue(user.getUserPosts(userId).contains(testPost1));
+        assertTrue(user.getUserPosts(userId).contains(testPost2));
     }
 
     @Test
@@ -94,4 +113,8 @@ public class SqlUserTest {
     public User setupNewUser(){
         return new User("John", "intern", "IT specialist", 1);
     }
+    public Post setupNewPost(){
+        return new Post(userId, "Jane", "Wonderful news");
+    }
+
 }

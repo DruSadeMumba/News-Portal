@@ -86,5 +86,4 @@ class SqlPostTest {
     public Post setupNewPost(){
         return new Post(1, "Jane", "Wonderful news");
     }
-
 }

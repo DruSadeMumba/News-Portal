@@ -15,10 +15,15 @@ public class SqlDepartmentTest {
     static Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/news_portal_test", null, null);
     private static Connection conn;
     private static  SqlDepartment department = new SqlDepartment(sql2o);
-    private static  SqlUser user = new SqlUser(sql2o);
     Department testDepartment = setupNewDepartment();
     Department testDepartment1 = setupNewDepartment();
     Department testDepartment2 = setupNewDepartment();
+
+    private static  SqlUser user = new SqlUser(sql2o);
+    int departmentId = testDepartment.getId();
+    User testUser = setupNewUser();
+    User testUser1 = setupNewUser();
+    User testUser2 = setupNewUser();
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -56,16 +61,12 @@ public class SqlDepartmentTest {
     @Test
     public void getUsersInDeptReturnsUsersCorrectly() throws Exception {
         department.add(testDepartment);
-        int departmentId = testDepartment.getId();
-        User testUser1 = new User("Jane", "Manager", "Human Resources", departmentId);
-        User testUser2 = new User("John", "Intern", "Human Resources", departmentId);
-        User testUser3 = new User("Janet", "Associate", "Human Resources", departmentId);
+        user.add(testUser);
         user.add(testUser1);
         user.add(testUser2);
-        user.add(testUser3);
+        assertTrue(department.getUsersInDept(departmentId).contains(testUser));
         assertTrue(department.getUsersInDept(departmentId).contains(testUser1));
         assertTrue(department.getUsersInDept(departmentId).contains(testUser2));
-        assertTrue(department.getUsersInDept(departmentId).contains(testUser3));
     }
 
     @Test
@@ -110,7 +111,7 @@ public class SqlDepartmentTest {
         return new Department("Human Resources");
     }
     public User setupNewUser(){
-        return new User("John", "intern", "IT specialist", 1);
+        return new User("John", "intern", "IT specialist", departmentId);
     }
 
 
