@@ -49,6 +49,15 @@ public class SqlUser implements InterfaceUser {
     }
 
     @Override
+    public List<User> getUserByDepartment(int departmentId) {
+        try(Connection con = sql2o.open()){
+            return con.createQuery("SELECT * FROM users WHERE departmentid = :departmentId")
+                    .addParameter("departmentId", departmentId)
+                    .executeAndFetch(User.class);
+        }
+    }
+
+    @Override
     public void update(int id, String name, String position, String role, int departmentId) {
         String sql = "UPDATE users SET (name, position, role, departmentid) = (SELECT :name, :position, :role, :departmentId FROM users) WHERE id = :id";
         try(Connection con = sql2o.open()){

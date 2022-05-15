@@ -70,4 +70,7 @@ public class SqlDepartmentPost implements InterfaceDepartmentPost {
                     .executeAndFetchFirst(DepartmentPost.class);
         }
     }
+
+    public void setFormattedCreatedAt() {
+    }
 }

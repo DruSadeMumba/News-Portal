@@ -27,7 +27,7 @@ public class Post implements Comparable <Post>{
     public void setUserId(int userId) {this.userId = userId;}
     public void setCreatedBy(String createdBy) {this.createdBy = createdBy;}
     public void setContent(String content) {this.content = content;}
-    public void setCreatedat(long createdat) {this.createdat = createdat;}
+    public void setCreatedat() {this.createdat = createdat;}
     public void setFormattedCreatedAt() {
         String formattedCreatedAt = new SimpleDateFormat("MM/dd/yyyy @ K:mm a").format(this.createdat);
     }
@@ -50,14 +50,13 @@ public class Post implements Comparable <Post>{
         return id == post.id &&
                 userId == post.userId &&
                 createdat == post.createdat &&
-                Objects.equals(createdBy, post.createdBy) &&
                 Objects.equals(content, post.content) &&
                 Objects.equals(type, post.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, createdBy, content, createdat, type);
+        return Objects.hash(id, userId, createdBy, content, type);
     }
 
     public int compareTo(Post postObject) {

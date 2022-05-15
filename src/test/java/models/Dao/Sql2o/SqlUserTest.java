@@ -1,5 +1,6 @@
 package models.Dao.Sql2o;
 
+import models.Department;
 import models.Post;
 import models.User;
 import org.junit.AfterClass;
@@ -26,6 +27,8 @@ public class SqlUserTest {
     Post testPost = setupNewPost();
     Post testPost1 = setupNewPost();
     Post testPost2 = setupNewPost();
+
+    private static  SqlDepartment department = new SqlDepartment(sql2o);
 
 
     @BeforeClass
@@ -108,13 +111,30 @@ public class SqlUserTest {
         assertEquals(0, user.getAll().size());
     }
 
+    @Test
+    public void getUserByDepartmentReturnsCorrectly() throws Exception{
+        Department testDepartment = setupDepartment();
+        Department testDepartment1 = setupDepartment();
+        User testUser = setupUserForDepartment(testDepartment1);
+        User testUser1 = setupUserForDepartment(testDepartment1);
+        User testUser2 = setupUserForDepartment(testDepartment);
+        assertEquals(3, user.getUserByDepartment(testDepartment.getId()).size());
+    }
+
     //helpers
 
     public User setupNewUser(){
         return new User("John", "intern", "IT specialist", 1);
     }
-    public Post setupNewPost(){
-        return new Post(userId, "Jane", "Wonderful news", "general");
+    public Post setupNewPost(){return new Post(userId, "Jane", "Wonderful news", "general");}
+    public Department setupDepartment(){
+        department.add(new Department("Human Resources"));
+        return new Department("Human Resources");
+    }
+    public User setupUserForDepartment(Department department) {
+        User testUser = new User("John", "intern", "IT specialist", department.getId());
+        user.add(testUser);
+        return testUser;
     }
 
 }

@@ -1,11 +1,17 @@
 import com.google.gson.Gson;
+import exceptions.ApiException;
 import models.Dao.Sql2o.SqlDepartment;
+import models.Dao.Sql2o.SqlDepartmentPost;
+import models.Dao.Sql2o.SqlPost;
 import models.Dao.Sql2o.SqlUser;
 import models.Department;
 import models.DepartmentPost;
+import models.Post;
 import models.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+
+import java.util.List;
 
 import static spark.Spark.*;
 
@@ -18,6 +24,8 @@ public class App {
         Gson gson = new Gson();
         SqlUser user = new SqlUser(sql2o);
         SqlDepartment department = new SqlDepartment(sql2o);
+        SqlDepartmentPost departmentPost = new SqlDepartmentPost(sql2o);
+        SqlPost post = new SqlPost(sql2o);
 
                 // get all users
         get("/users", "application/json", (req, res)->{
@@ -58,8 +66,37 @@ public class App {
         });
 
             //view users in departments
-        get("/departments/:departmentId/users", "application/json", (req, res)->{
-            return null;
+        get("/departments/:id/users", "application/json", (req, res)->{//not working
+            int departmentId = Integer.parseInt(req.params(":id"));
+            Department department2 = department.findById(departmentId);
+            List<User> allUsers;
+            if (department2 == null){
+                throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
+            }
+            allUsers = user.getUserByDepartment(departmentId);
+            return gson.toJson(allUsers);
+        });
+
+                //create new post
+        post("/posts/new", "application/json", (req, res)->{
+            Post newPost = gson.fromJson(req.body(), Post.class);
+            newPost.setCreatedat();
+            newPost.setFormattedCreatedAt();
+            post.add(newPost);
+            res.status(201);
+            return gson.toJson(newPost);
+        });
+
+                //create new department post
+        post("/departments/:departmentId/posts/new", "application/json", (req, res)->{
+            int departmentId = Integer.parseInt(req.params("departmentId"));
+            DepartmentPost newDepartmentPost = gson.fromJson(req.body(), DepartmentPost.class);
+            newDepartmentPost.setCreatedat();
+            newDepartmentPost.setFormattedCreatedAt();
+            newDepartmentPost.setDepartmentId(departmentId);
+            departmentPost.add(newDepartmentPost);
+            res.status(201);
+            return gson.toJson(newDepartmentPost);
         });
 
     }
