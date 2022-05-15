@@ -38,7 +38,6 @@ public class SqlPostTest {
         System.out.println("connection closed");
     }
 
-
     @Test
     public void addingPostSetsId() throws Exception {
         int initialPostId = testPost.getId();
