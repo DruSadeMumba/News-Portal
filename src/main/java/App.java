@@ -11,7 +11,9 @@ import models.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static spark.Spark.*;
 
@@ -121,5 +123,14 @@ public class App {
             return gson.toJson(allDepartmentPost);
         });
 
+            //Filters
+        exception(ApiException.class, (exception, req, res) -> {
+            Map<String, Object> jsonMap = new HashMap<>();
+            jsonMap.put("status", ((ApiException) exception).getStatusCode());
+            jsonMap.put("errorMessage", exception.getMessage());
+            res.type("application/json");
+            res.status(((ApiException) exception).getStatusCode());
+            res.body(gson.toJson(jsonMap));
+        });
     }
 }
