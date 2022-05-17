@@ -1,9 +1,7 @@
 package models.Dao.Sql2o;
 
 import models.Dao.Interfaces.InterfaceDepartmentPost;
-import models.Dao.Interfaces.InterfacePost;
 import models.DepartmentPost;
-import models.Post;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -33,9 +31,10 @@ public class SqlDepartmentPost implements InterfaceDepartmentPost {
     }
 
     @Override
-    public List<DepartmentPost> getAll() {
+    public List<DepartmentPost> getAll(int departmentId) {
         try(Connection con = sql2o.open()){
-            return con.createQuery("SELECT * FROM posts WHERE type = 'departmentnews';")
+            return con.createQuery("SELECT * FROM posts WHERE departmentid = :departmentId;")
+                    .addParameter("departmentId", departmentId)
                     .throwOnMappingFailure(false)
                     .executeAndFetch(DepartmentPost.class);
         }
@@ -71,6 +70,4 @@ public class SqlDepartmentPost implements InterfaceDepartmentPost {
         }
     }
 
-    public void setFormattedCreatedAt() {
-    }
 }

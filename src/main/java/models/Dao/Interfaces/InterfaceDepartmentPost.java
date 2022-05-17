@@ -11,7 +11,7 @@ public interface InterfaceDepartmentPost {
     void add (DepartmentPost DepartmentPost);
 
     //Read
-    List<DepartmentPost> getAll();
+    List<DepartmentPost> getAll(int departmentId);
 
     //Update
     /*void update (int id, int userId, String createdBy, String Content, long createdat, int departmentId);*/

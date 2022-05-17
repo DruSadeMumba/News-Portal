@@ -28,6 +28,8 @@ public class App {
         SqlDepartment department = new SqlDepartment(sql2o);
         SqlDepartmentPost departmentPost = new SqlDepartmentPost(sql2o);
         SqlPost post = new SqlPost(sql2o);
+        Connection conn;
+        conn = sql2o.open();
 
                 // get all users
         get("/users", "application/json", (req, res)->{
@@ -49,7 +51,7 @@ public class App {
             return gson.toJson(newUser.getName());
         });
 
-                //get all departments
+        //get all departments
         get("/departments", "application/json", (req, res)->{
             if (department.getAll().size() > 0) {
                 return gson.toJson(department.getAll());
@@ -80,8 +82,10 @@ public class App {
         });
 
                 //create new post
-        post("/posts/new", "application/json", (req, res)->{
+        post("users/:userId/posts/new", "application/json", (req, res)->{
+            int userId = Integer.parseInt(req.params("userId"));
             Post newPost = gson.fromJson(req.body(), Post.class);
+            newPost.setUserId(userId);
             newPost.setCreatedat();
             newPost.setFormattedCreatedAt();
             post.add(newPost);
@@ -100,11 +104,13 @@ public class App {
         });
 
                 //create new department post
-        post("/departments/:departmentId/posts/new", "application/json", (req, res)->{ //not working
+        post("/users/:userId/departments/:departmentId/departmentPosts/new", "application/json", (req, res)->{ //not working
             int departmentId = Integer.parseInt(req.params("departmentId"));
+            int userId = Integer.parseInt(req.params("userId"));
             DepartmentPost newDepartmentPost = gson.fromJson(req.body(), DepartmentPost.class);
             newDepartmentPost.setCreatedat();
             newDepartmentPost.setFormattedCreatedAt();
+            newDepartmentPost.setDepartmentId(userId);
             newDepartmentPost.setDepartmentId(departmentId);
             departmentPost.add(newDepartmentPost);
             res.status(201);
@@ -112,14 +118,14 @@ public class App {
         });
 
                 //get department posts
-        get("/departments/:id/posts", "application/json", (req, res)->{//not working
+        get("/departments/:id/departmentPosts", "application/json", (req, res)->{//not working
             int departmentId = Integer.parseInt(req.params(":id"));
             Department department2 = department.findById(departmentId);
             List<DepartmentPost> allDepartmentPost;
             if (department2 == null){
                 throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("id")));
             }
-            allDepartmentPost = departmentPost.getAll();
+            allDepartmentPost = departmentPost.getAll(departmentId);
             return gson.toJson(allDepartmentPost);
         });
 
@@ -131,6 +137,10 @@ public class App {
             res.type("application/json");
             res.status(((ApiException) exception).getStatusCode());
             res.body(gson.toJson(jsonMap));
+        });
+
+        after((req, res) ->{
+            res.type("application/json");
         });
     }
 }

@@ -1,5 +1,6 @@
 package models.Dao.Sql2o;
 
+import models.Department;
 import models.DepartmentPost;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -16,9 +17,12 @@ public class SqlDepartmentPostTest {
     static Sql2o sql2o = new Sql2o("jdbc:postgresql://localhost:5432/news_portal_test", null, null);
     private static Connection conn;
     private static  SqlDepartmentPost departmentPost = new SqlDepartmentPost(sql2o);
-    DepartmentPost testDepartmentPost = setupNewDepartmentPost();
-    DepartmentPost testDepartmentPost1 = setupNewDepartmentPost();
-    DepartmentPost testDepartmentPost2 = setupNewDepartmentPost();
+
+    Department department = setupNewDepartment();
+    Department department1 = setupNewDepartment();
+    DepartmentPost testDepartmentPost = setupDepartmentPost(department);
+    DepartmentPost testDepartmentPost1 = setupDepartmentPost(department);
+    DepartmentPost testDepartmentPost2 = setupDepartmentPost(department1);
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -41,21 +45,22 @@ public class SqlDepartmentPostTest {
 
     @Test
     public void addingDepartmentPostSetsId() throws Exception {
-        int initialPostId = testDepartmentPost.getId();
+        int initialDepartmentPostId = testDepartmentPost.getId();
         departmentPost.add(testDepartmentPost);
-        assertNotEquals(initialPostId, testDepartmentPost.getId());
+        assertNotEquals(initialDepartmentPostId, testDepartmentPost.getId());
     }
 
     @Test
     public void addedDepartmentPostsAreReturnedFromGetAll() throws Exception{
         departmentPost.add(testDepartmentPost);
-        departmentPost.add(testDepartmentPost1);
-        assertEquals(2, departmentPost.getAll().size());
+        departmentPost.add(testDepartmentPost);
+        departmentPost.add(testDepartmentPost);
+        assertEquals(3, departmentPost.getAll(department.getId()).size());
     }
 
     @Test
     public void noDepartmentPostsReturnsEmptyList() throws Exception {
-        assertEquals(0, departmentPost.getAll().size());
+        assertEquals(0, departmentPost.getAll(department.getId()).size());
     }
     @Test
     void deleteByIdDeletesCorrectPost() throws Exception{
@@ -64,7 +69,7 @@ public class SqlDepartmentPostTest {
         departmentPost.add(testDepartmentPost2);
         departmentPost.deleteById(testDepartmentPost.getId());
         departmentPost.deleteById(testDepartmentPost1.getId());
-        assertEquals(1, departmentPost.getAll().size());
+        assertEquals(1, departmentPost.getAll(department.getId()).size());
     }
 
     @Test
@@ -73,7 +78,7 @@ public class SqlDepartmentPostTest {
         departmentPost.add(testDepartmentPost1);
         departmentPost.add(testDepartmentPost2);
         departmentPost.clearAll();
-        assertEquals(0, departmentPost.getAll().size());
+        assertEquals(0, departmentPost.getAll(department.getId()).size());
     }
 
     @Test
@@ -82,8 +87,19 @@ public class SqlDepartmentPostTest {
         assertEquals(testDepartmentPost.getId(), departmentPost.findById(testDepartmentPost.getId()).getId());
     }
 
+
+
     //helper
+    public DepartmentPost setupDepartmentPost(Department department){
+        return new DepartmentPost(1, "Jane", "Wonderful news", "general", department.getId());
+    }
+
     public DepartmentPost setupNewDepartmentPost(){
         return new DepartmentPost(1, "Jane", "Wonderful news", "general", 1);
+
     }
+    public Department setupNewDepartment(){
+        return new Department("Human Resources");
+    }
+
 }
