@@ -28,7 +28,9 @@ departmentid INT
 
 CREATE TABLE departments (
 id SERIAL PRIMARY KEY,
-name VARCHAR
+name VARCHAR,
+description VARCHAR,
+number INT
 );
 
 CREATE TABLE posts (
