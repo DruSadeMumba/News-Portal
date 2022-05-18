@@ -21,7 +21,7 @@ public interface InterfaceUser {
     void update (int id, String name, String position, String role, int departmentId);
 
     //Delete
-    void deleteById(int id);
+    Object deleteById(int id);
     void clearAll();
 
     User findById(int id);

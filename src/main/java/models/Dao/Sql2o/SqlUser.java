@@ -44,6 +44,7 @@ public class SqlUser implements InterfaceUser {
         try(Connection con = sql2o.open()){
             return con.createQuery("SELECT * FROM posts WHERE userid = :userId")
                     .addParameter("userId", userId)
+                    .throwOnMappingFailure(false)
                     .executeAndFetch(Post.class);
         }
     }
@@ -74,7 +75,7 @@ public class SqlUser implements InterfaceUser {
     }
 
     @Override
-    public void deleteById(int id) {
+    public Object deleteById(int id) {
         String sql = "DELETE FROM users WHERE id=:id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
@@ -83,6 +84,7 @@ public class SqlUser implements InterfaceUser {
         } catch (Sql2oException ex){
             System.out.println(ex);
         }
+        return "User deleted";
     }
 
     @Override

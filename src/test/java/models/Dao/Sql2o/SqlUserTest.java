@@ -128,8 +128,8 @@ public class SqlUserTest {
     }
     public Post setupNewPost(){return new Post(userId, "Jane", "Wonderful news", "general");}
     public Department setupDepartment(){
-        department.add(new Department("Human Resources"));
-        return new Department("Human Resources");
+        department.add(new Department("Human Resources", "resourcing humans", 7));
+        return new Department("Human Resources", "resourcing humans", 7);
     }
     public User setupUserForDepartment(Department department) {
         User testUser = new User("John", "intern", "IT specialist", department.getId());

@@ -23,8 +23,15 @@ public class DepartmentTest {
         assertEquals("Human Resources", testDepartment.getName());
     }
 
+    @Test
+    public void getDescription(){assertEquals("resourcing humans", testDepartment.getDescription());}
+
+    @Test
+    public void getNumber(){assertEquals(7, testDepartment.getNumber());}
+
+
     //helper
     public Department setUpDepartment(){
-        return new Department("Human Resources");
+        return new Department("Human Resources", "resourcing humans", 7);
     }
 }

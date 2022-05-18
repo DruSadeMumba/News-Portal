@@ -2,7 +2,6 @@ package models.Dao.Sql2o;
 
 import models.Dao.Interfaces.InterfacePost;
 import models.Post;
-import models.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 import org.sql2o.Sql2oException;
@@ -41,7 +40,7 @@ public class SqlPost implements InterfacePost {
 
 
     @Override
-    public void deleteById(int id) {
+    public Object deleteById(int id) {
         try (Connection con = sql2o.open()) {
             con.createQuery("DELETE FROM posts WHERE id=:id")
                     .addParameter("id", id)
@@ -50,6 +49,7 @@ public class SqlPost implements InterfacePost {
         } catch (Sql2oException ex){
             out.println(ex);
         }
+        return "Post deleted";
     }
 
     @Override

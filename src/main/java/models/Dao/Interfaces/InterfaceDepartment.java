@@ -16,10 +16,10 @@ public interface InterfaceDepartment {
     List<User> getUsersInDept(int departmentId);
 
     //Update
-    void update (int id, String name);
+    void update (int id, String name, String description, int number);
 
     //Delete
-    void deleteById(int id);
+    Object deleteById(int id);
     void clearAll();
 
     Department findById(int id);

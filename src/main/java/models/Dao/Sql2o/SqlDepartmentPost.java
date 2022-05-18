@@ -41,7 +41,7 @@ public class SqlDepartmentPost implements InterfaceDepartmentPost {
     }
 
     @Override
-    public void deleteById(int id) {
+    public Object deleteById(int id) {
         try (Connection con = sql2o.open()) {
             con.createQuery("DELETE FROM posts WHERE id=:id")
                     .addParameter("id", id)
@@ -49,6 +49,7 @@ public class SqlDepartmentPost implements InterfaceDepartmentPost {
         } catch (Sql2oException ex){
             out.println(ex);
         }
+        return "Post deleted";
     }
 
     @Override
@@ -69,5 +70,4 @@ public class SqlDepartmentPost implements InterfaceDepartmentPost {
                     .executeAndFetchFirst(DepartmentPost.class);
         }
     }
-
 }

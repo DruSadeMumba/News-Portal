@@ -99,7 +99,7 @@ public class SqlDepartmentPostTest {
 
     }
     public Department setupNewDepartment(){
-        return new Department("Human Resources");
+        return new Department("Human Resources", "resourcing humans", 7);
     }
 
 }

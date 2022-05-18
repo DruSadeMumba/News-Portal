@@ -18,7 +18,7 @@ public class SqlDepartment implements InterfaceDepartment {
     }
     @Override
     public void add(Department department) {
-        String sql = "INSERT INTO departments (name) VALUES (:name)";
+        String sql = "INSERT INTO departments (name, description, number) VALUES (:name, :description, :number)";
         try(Connection con = sql2o.open()){
             int id = (int) con.createQuery(sql, true)
                     .bind(department)
@@ -48,11 +48,13 @@ public class SqlDepartment implements InterfaceDepartment {
     }
 
     @Override
-    public void update(int id, String name) {
-        String sql = "UPDATE departments SET (name) = (SELECT :name FROM departments) WHERE id = :id";
+    public void update(int id, String name, String description, int number) {
+        String sql = "UPDATE departments SET (name, description, number) = (SELECT :name, :description, :number FROM departments) WHERE id = :id";
         try(Connection con = sql2o.open()){
             con.createQuery(sql)
                     .addParameter("name", name)
+                    .addParameter("description", description)
+                    .addParameter("number", number)
                     .addParameter("id", id)
                     .executeUpdate();
         } catch (Sql2oException ex) {
@@ -61,7 +63,7 @@ public class SqlDepartment implements InterfaceDepartment {
     }
 
     @Override
-    public void deleteById(int id) {
+    public Object deleteById(int id) {
         String sql = "DELETE FROM departments WHERE id=:id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
@@ -70,6 +72,8 @@ public class SqlDepartment implements InterfaceDepartment {
         } catch (Sql2oException ex){
             System.out.println(ex);
         }
+
+        return "Department Deleted";
     }
 
     @Override

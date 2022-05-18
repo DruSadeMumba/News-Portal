@@ -1,6 +1,5 @@
 package models.Dao.Interfaces;
 
-import models.DepartmentPost;
 import models.Post;
 
 import java.util.List;
@@ -19,7 +18,7 @@ public interface InterfacePost {
     /*void update (int id, int userId, String createdBy, String Content, long createdat);*/
 
     //Delete
-    void deleteById(int id);
+    Object deleteById(int id);
     void clearAll();
 
     Post findById(int id);

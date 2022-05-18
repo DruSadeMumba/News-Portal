@@ -83,7 +83,7 @@ public class SqlDepartmentTest {
     @Test
     public void updateChangesDepartmentName() throws Exception{
         department.add(testDepartment);
-        department.update(testDepartment.getId(), "Human Resource");
+        department.update(testDepartment.getId(), "Human Resource", "resourcing humans", 7);
         assertNotEquals(testDepartment.getName(), department.findById(testDepartment.getId()).getName());
     }
 
@@ -108,7 +108,7 @@ public class SqlDepartmentTest {
     
     //helper
     public Department setupNewDepartment(){
-        return new Department("Human Resources");
+        return new Department("Human Resources", "resourcing humans", 7);
     }
     public User setupNewUser(){
         return new User("John", "intern", "IT specialist", departmentId);

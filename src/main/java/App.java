@@ -19,7 +19,7 @@ import static spark.Spark.*;
 
 public class App {
     public static void main(String[] args) {
-
+        port(4040);
         String connectionString = "jdbc:postgresql://localhost:5432/news_portal_test";
         Sql2o sql2o = new Sql2o(connectionString, null, null);
 
@@ -31,24 +31,15 @@ public class App {
         Connection conn;
         conn = sql2o.open();
 
-                // get all users
-        get("/users", "application/json", (req, res)->{
-            if (user.getAll().size() > 0) {
-                return gson.toJson(user.getAll());
-            }
-            else {
-                return "{\"message\":\"I'm sorry, but no users are currently listed in the database.\"}";
-            }
-        });
 
-                //create new user
-        post("/departments/:departmentId/users/new", "application/json", (req, res)->{
-            int departmentId = Integer.parseInt(req.params("departmentId"));
-            User newUser = gson.fromJson(req.body(), User.class);
-            newUser.setDepartmentId(departmentId);
-            user.add(newUser);
+
+                //DEPARTMENTS
+        //create new department
+        post("/departments/new", "application/json", (req, res)->{
+            Department newDepartment = gson.fromJson(req.body(), Department.class);
+            department.add(newDepartment);
             res.status(201);
-            return gson.toJson(newUser.getName());
+            return gson.toJson(newDepartment);
         });
 
         //get all departments
@@ -61,12 +52,13 @@ public class App {
             }
         });
 
-                //create new department
-        post("/departments/new", "application/json", (req, res)->{
-            Department newDepartment = gson.fromJson(req.body(), Department.class);
-            department.add(newDepartment);
-            res.status(201);
-            return gson.toJson(newDepartment);
+        //get dept by id
+        get("/departments/:departmentId", "application/json", (req, res)->{
+            int departmentId = Integer.parseInt(req.params("departmentId"));
+            if (department.findById(departmentId) == null){
+                throw new ApiException(404, String.format("No department with the id: \"%s\" exists", req.params("departmentId")));
+            }
+            return gson.toJson(department.findById(departmentId));
         });
 
             //view users in departments
@@ -81,8 +73,57 @@ public class App {
             return gson.toJson(allUsers);
         });
 
+            //delete department
+        delete("/departments/:id/delete", "application/json", (req, res) -> {
+            int departmentId = Integer.parseInt(req.params(":id"));
+            res.status(200);
+            return gson.toJson(department.deleteById(departmentId));
+        });
+
+
+
+                //USERS
+        // get all users
+        get("/users", "application/json", (req, res)->{
+            if (user.getAll().size() > 0) {
+                return gson.toJson(user.getAll());
+            }
+            else {
+                return "{\"message\":\"I'm sorry, but no users are currently listed in the database.\"}";
+            }
+        });
+
+        //create new user
+        post("/departments/:departmentId/users/new", "application/json", (req, res)->{
+            int departmentId = Integer.parseInt(req.params("departmentId"));
+            User newUser = gson.fromJson(req.body(), User.class);
+            newUser.setDepartmentId(departmentId);
+            user.add(newUser);
+            res.status(201);
+            return gson.toJson(newUser);
+        });
+
+        //get user by id
+        get("/users/:userId", "application/json", (req, res)->{
+            int userId = Integer.parseInt(req.params("userId"));
+            if (user.findById(userId) == null){
+                throw new ApiException(404, String.format("No user with the id: \"%s\" exists", req.params("userId")));
+            }
+            return gson.toJson(user.findById(userId));
+        });
+
+        //delete user
+        delete("/users/:userId/delete", "application/json", (req, res) -> {
+            int userId = Integer.parseInt(req.params("userId"));
+            res.status(200);
+            return gson.toJson(user.deleteById(userId));
+        });
+
+
+
+                    //POSTS
                 //create new post
-        post("users/:userId/posts/new", "application/json", (req, res)->{
+        post("/users/:userId/posts/new", "application/json", (req, res)->{
             int userId = Integer.parseInt(req.params("userId"));
             Post newPost = gson.fromJson(req.body(), Post.class);
             newPost.setUserId(userId);
@@ -101,6 +142,13 @@ public class App {
             else {
                 return "{\"message\":\"I'm sorry, but no posts are currently listed in the database.\"}";
             }
+        });
+
+        //delete posts
+        delete("/posts/:id/delete", "application/json", (req, res) -> {
+            int postId = Integer.parseInt(req.params(":id"));
+            res.status(200);
+            return gson.toJson(post.deleteById(postId));
         });
 
                 //create new department post
@@ -129,6 +177,13 @@ public class App {
             return gson.toJson(allDepartmentPost);
         });
 
+        //delete dept post
+        delete("/departmentPosts/:id/delete", "application/json", (req, res) -> {
+            int departmentPostId = Integer.parseInt(req.params(":id"));
+            res.status(200);
+            return gson.toJson(departmentPost.deleteById(departmentPostId));
+        });
+
             //Filters
         exception(ApiException.class, (exception, req, res) -> {
             Map<String, Object> jsonMap = new HashMap<>();
@@ -144,3 +199,22 @@ public class App {
         });
     }
 }
+
+
+
+
+
+//edit user
+        /*put("/users/:userId", "application/json", (req, res)->{
+            User newUser = gson.fromJson(req.body(), User.class);
+
+        });*/
+
+        /*put("/news/:id", (req, res) -> {
+            Gson gson = new Gson();
+            News news = gson.fromJson(req.body(), News.class);
+            news.setId(Integer.parseInt(req.params(":id")));
+            res.status(200);
+            res.type("application/json");
+            return gson.toJson(new NewsDao().updateNews(connection, news));
+        });*/

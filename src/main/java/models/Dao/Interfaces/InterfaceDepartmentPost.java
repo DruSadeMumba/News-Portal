@@ -17,7 +17,7 @@ public interface InterfaceDepartmentPost {
     /*void update (int id, int userId, String createdBy, String Content, long createdat, int departmentId);*/
 
     //Delete
-    void deleteById(int id);
+    Object deleteById(int id);
     void clearAll();
 
     DepartmentPost findById(int id);
